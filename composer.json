@@ -1,0 +1,24 @@
+{
+    "name": "denisok94/yii-helper",
+    "description": "--",
+    "keywords": ["yii2-extension"],
+    "license": "BSD-3-Clause",
+    "type": "yii2-extension",
+    "version": "0.0.1",
+    "authors": [{
+        "name": "Denisok94",
+        "email": "denisok94@inbox.ru"
+    }],
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "denisok94/helper": "*"
+    },
+    "conflict": {
+        "denisok94/helper": "<0.7.8"
+    },
+    "autoload": {
+        "psr-4": {
+            "denisok94\\helper\\yii2\\": "src"
+        }
+    }
+}
