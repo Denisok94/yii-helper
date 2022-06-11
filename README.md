@@ -22,64 +22,11 @@ php composer.phar update
 
 # Using
 
-- [Helper](#Helper)
 - [StatusController](#StatusController)
 - [ConsoleController](#ConsoleController)
+- [Helper](#Helper)
 
-## Helper
-
-```php
-use \denisok94\helper\yii2\Helper as H;
-H::methodName($arg);
-```
-
-`yii2\Helper` наследует все от `Helper`.
-
-| Method | Description |
-|----------------|:----------------|
-| exec | Выполнить консольную команду |
-| log | Записать данные в лог файл. Файлы хранятся в `runtime/logs/` |
-| setCache | Запомнить массив в кэш |
-| getCache | Взять массив из кэша |
-| deleteCache | Удалить кэш |
-| ~~clearCache~~ | | |
-
-> setCache/getCache.
-В кэш можно сохранить результат запроса из бд, который часто запрашивается, например для фильтра.
-К тому же, этот фильтр, может быть, использоваться несколько раз на странице или сама страница с ним, может, многократно обновляться/перезагружаться.
-
-```php
-namespace app\components;
-use app\components\H;
-
-class Filter
-{
-    //.....
-    /**
-     * @return array
-     */
-    public static function getTypes()
-    {
-        $types = H::getCache('types'); // dir: app/cache/types.json
-        if ($types) {
-            return $types;
-        } else {
-            $types = \app\models\Types::find()
-                ->select(['id', 'name'])->all();
-            $array = [];
-            foreach ($types as $key => $value) {
-                $array[$value->id] = ucfirst($value->name);
-            }
-            H::setCache('types', $array);
-            return $array;
-        }
-    }
-}
-```
-___
-
-
-### **StatusController**
+# **StatusController**
 
 Для общения по формату json.
 
@@ -172,9 +119,8 @@ return $this->sendResponse($data, $message); // http status code 200
 return $this->sendResponse($data, $message, $status, 999); // http status code 999
 // ['code' => '999', 'status' => $status, 'message' => $message, 'data' => $data]
 ```
-___
 
-### **ConsoleController**
+# **ConsoleController**
 
 ```php
 namespace app\commands;
@@ -211,4 +157,57 @@ class MyController extends ConsoleController
 }
 
 H::exec('my/test', ['test' => 'test']);
+```
+# **Helper**
+
+```php
+use \denisok94\helper\yii2\Helper as H;
+H::methodName($arg);
+```
+
+`yii2\Helper` наследует все от `Helper`.
+
+| Method | Description |
+|----------------|:----------------|
+| exec | Выполнить консольную команду |
+| log | Записать данные в лог файл. Файлы хранятся в `runtime/logs/` |
+| setCache | Запомнить массив в кэш |
+| getCache | Взять массив из кэша |
+| deleteCache | Удалить кэш |
+| ~~clearCache~~ | | |
+
+> and methods [Helpers](https://github.com/Denisok94/helper)
+
+___
+`setCache`/`getCache`.
+В кэш можно сохранить результат запроса из бд, который часто запрашивается, например для фильтра.
+К тому же, этот фильтр, может быть, использоваться несколько раз на странице или сама страница с ним, может, многократно обновляться/перезагружаться.
+
+```php
+namespace app\components;
+use app\components\H;
+
+class Filter
+{
+    //.....
+    /**
+     * @return array
+     */
+    public static function getTypes()
+    {
+        $types = H::getCache('types'); // dir: app/cache/types.json
+        if ($types) {
+            return $types;
+        } else {
+            $types = \app\models\Types::find()
+                ->select(['id', 'name'])->all();
+            $array = [];
+            foreach ($types as $key => $value) {
+                $array[$value->id] = ucfirst($value->name);
+            }
+            H::setCache('types', $array);
+            return $array;
+        }
+    }
+}
 ```
