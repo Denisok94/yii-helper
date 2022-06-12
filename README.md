@@ -1,3 +1,5 @@
+<h1 align = "center"> Yii Helper Class </h1>
+
 # Installation
 
 Run:
@@ -28,19 +30,22 @@ php composer.phar update
 
 # **StatusController**
 
-Для общения по формату json.
+For communication in the json format.
 
 | Method | Parameters | default code | Description |
 |----------------|:---------:|:---------:|:----------------|
-| send | $data | 200 | Собственный формат ответа |
-| sendResponse | $data, $message, $status, $code | 200 | Собственный формат ответа |
-| sendSuccess | $data | 200 | Сообщить об успехе |
-| sendError | $message, $status, $code | 400 | Сообщить об ошибке |
+| send | $data | 200 | custom responses |
+| sendSuccess | $data | 200 | Report Success |
+| sendResponse | $data, $message, $status, $code | 200 | custom responses |
+| sendError | $message, $status, $code | 400 | Report an error |
 | sendBadRequest | $message | 400 | |
 | sendUnauthorized | $message | 401 | |
 | sendForbidden | $message | 403 | |
 | sendNotFound | $message | 404 | |
 | sendInternalServerError | $message | 500 | |
+| getPost | $name | -- | Получить параметр из сообщения |
+| success | $data | -- | outdated |
+| error | $error, $text, $data | -- | outdated |
 
 ```php
 namespace app\controllers;
@@ -59,8 +64,7 @@ $message = $this->post; // array
 $phone = $this->getPost('phone'); // phone or null
 ```
 
-Сообщить об успехе
-
+Report Success
 ```php
 // Сообщить об успешной обработки
 return $this->sendSuccess(); // http status code 200
@@ -70,8 +74,7 @@ return $this->sendSuccess($data);  // http status code 200
 // ['code' => '200', 'status' => 'OK', 'data' => $data];
 ```
 
-Сообщить об ошибке
-
+Report an error
 ```php
 return $this->sendError(); // http status code 400
 // ['code' => '400', 'status' => 'FAIL', 'message' => 'Error', 'data' => []]
@@ -102,9 +105,8 @@ try {
 }
 ```
 
-Собственный формат ответа 
+Custom response format
 ```php
-// custom responses
 return $this->send([...]); // http status code 200
 // [...];
 return $this->send(['code' => 204]); // http status code 204
@@ -134,6 +136,7 @@ class MyController extends ConsoleController
 
 Вызвать `action` консольного контроллера:
 ```php
+use \denisok94\helper\yii2\Helper as H;
 H::exec('controller/action', [params]);
 ```
 > Консольный контроллер, не подразумевает ответ. 
@@ -147,16 +150,20 @@ $init = $this->params;
 
 Пример:
 ```php
+namespace app\commands;
+use \denisok94\helper\yii2\ConsoleController;
+
 class MyController extends ConsoleController
 {
 	public function actionTest()
 	{
-		$init = $this->params;
-		$test = $this->params['test'];
+		$init = $this->params; // ['test' => 'test1']
+		$test = $this->params['test']; // 'test1'
 	}
 }
-
-H::exec('my/test', ['test' => 'test']);
+//
+use \denisok94\helper\yii2\Helper as H;
+H::exec('my/test', ['test' => 'test1']);
 ```
 # **Helper**
 
@@ -165,7 +172,7 @@ use \denisok94\helper\yii2\Helper as H;
 H::methodName($arg);
 ```
 
-`yii2\Helper` наследует все от `Helper`.
+`yii2\Helper` наследует все от [Helpers](https://github.com/Denisok94/helper)
 
 | Method | Description |
 |----------------|:----------------|
@@ -176,10 +183,9 @@ H::methodName($arg);
 | deleteCache | Удалить кэш |
 | ~~clearCache~~ | | |
 
-> and methods [Helpers](https://github.com/Denisok94/helper)
 
 ___
-`setCache`/`getCache`.
+> `setCache`/`getCache`.
 В кэш можно сохранить результат запроса из бд, который часто запрашивается, например для фильтра.
 К тому же, этот фильтр, может быть, использоваться несколько раз на странице или сама страница с ним, может, многократно обновляться/перезагружаться.
 
