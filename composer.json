@@ -4,14 +4,15 @@
     "keywords": ["yii2-extension"],
     "license": "BSD-3-Clause",
     "type": "yii2-extension",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "authors": [{
         "name": "Denisok94",
         "email": "denisok94@inbox.ru"
     }],
     "require": {
         "yiisoft/yii2": "~2.0.0",
-        "denisok94/helper": "*"
+        "denisok94/helper": "*",
+        "denisok94/helper-composer": "*"
     },
     "conflict": {
         "denisok94/helper": "<0.7.8"
