@@ -73,6 +73,7 @@ class StatusController extends Controller
         $this->enableCsrfValidation = false;
 
         header('Access-Control-Allow-Origin: *');
+        header('Cache-Control: no-cache');
         $this->post = ArrayHelper::toArray(Yii::$app->request->rawBody);
 
         return parent::beforeAction($action);
