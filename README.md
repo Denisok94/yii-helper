@@ -1,4 +1,4 @@
-<h1 align = "center"> Yii Helper Class </h1>
+<h1 align = "center"> Yii2 Helper Class </h1>
 
 # Installation
 
@@ -22,7 +22,7 @@ composer update
 php composer.phar update
 ```
 
-# Using
+# Use
 
 - [StatusController](#StatusController)
 - [ConsoleController](#ConsoleController)
