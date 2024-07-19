@@ -4,8 +4,7 @@ namespace denisok94\helper\yii2\traits;
 
 use Yii;
 use yii\helpers\FileHelper;
-use denisok94\helper\traits\ArrayHelper;
-use denisok94\helper\traits\DataHelper;
+use denisok94\helper\yii2\Helper;
 
 /**
  * Other trait
@@ -23,15 +22,15 @@ trait Other
     public static function exec(string $path, array $params, bool $sync = true, string $out = 'runtime/logs/consoleOut', string $error = 'runtime/logs/consoleError')
     {
         $dir = Yii::$app->getBasePath();
-        $dt = DataHelper::currentDate("d.m.Y");
+        $dt = Helper::currentDate("d.m.Y");
         $syncStr = $sync ? '&' : '';
-        $json = addcslashes(ArrayHelper::toJson($params), '"');
+        $json = addcslashes(Helper::toJson($params), '"');
         $command = "php $dir/yii $path --json=\"$json\" >> $dir/$out.$dt.log 2>> $dir/$error.$dt.log $syncStr";
         // exec($command);
         exec($command, $output, $return_val);
         if ($return_val != 0) {
             $id = microtime(true);
-            Other::log('execError', "$id | error code: $return_val, command: $command, out: " . ArrayHelper::toJson($output));
+            Other::log('execError', "$id | error code: $return_val, command: $command, out: " . Helper::toJson($output));
             return "ERROR in exec '$path', code: $return_val, id: $id\n. learn more in '/runtime/logs/execError.$dt.log'";
         }
     }
@@ -46,14 +45,14 @@ trait Other
     {
         $fileCache = Yii::$app->getBasePath() . "/cache/$name.json";
         if ((file_exists($fileCache))) {
-            $oldArray = ArrayHelper::toArray(file_get_contents($fileCache));
+            $oldArray = Helper::toArray(file_get_contents($fileCache));
             $newArray = array_merge($oldArray, $array);
         } else {
             $dirCache = pathinfo($fileCache, PATHINFO_DIRNAME);
             if (!is_dir($dirCache)) self::createDirCache($dirCache);
             $newArray = $array;
         }
-        $fpc = file_put_contents($fileCache, ArrayHelper::toJson($newArray), LOCK_EX);
+        $fpc = file_put_contents($fileCache, Helper::toJson($newArray), LOCK_EX);
         return ($fpc === false) ? false : true;
     }
 
@@ -66,7 +65,7 @@ trait Other
     {
         $fileCache = Yii::$app->getBasePath() . "/cache/$name.json";
         if (file_exists($fileCache)) {
-            return ArrayHelper::toArray(file_get_contents($fileCache));
+            return Helper::toArray(file_get_contents($fileCache));
         } else {
             return false;
         }
@@ -109,7 +108,7 @@ trait Other
     public static function log(string $name, string $value)
     {
         $dir = Yii::$app->getBasePath();
-        $dt = DataHelper::currentDate("d.m.Y");
-        file_put_contents("$dir/runtime/logs/$name.$dt.log", DataHelper::currentDt() . ' | ' . $value . "\n", FILE_APPEND);
+        $dt = Helper::currentDate("d.m.Y");
+        file_put_contents("$dir/runtime/logs/$name.$dt.log", Helper::currentDt() . ' | ' . $value . "\n", FILE_APPEND);
     }
 }

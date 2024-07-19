@@ -5,7 +5,7 @@ namespace denisok94\helper\yii2;
 use Yii;
 use yii\web\Controller;
 use yii\web\Response;
-use denisok94\helper\traits\ArrayHelper;
+use denisok94\helper\yii2\Helper;
 
 /**
  * Для общения по формату json.
@@ -74,7 +74,7 @@ class StatusController extends Controller
 
         header('Access-Control-Allow-Origin: *');
         header('Cache-Control: no-cache');
-        $this->post = ArrayHelper::toArray(Yii::$app->request->rawBody);
+        $this->post = Helper::toArray(Yii::$app->request->rawBody);
 
         return parent::beforeAction($action);
     }
@@ -93,7 +93,7 @@ class StatusController extends Controller
      */
     public function getPost(string $path)
     {
-        return ArrayHelper::get($this->post, $path);
+        return Helper::get($this->post, $path);
     }
 
     //-------------------------------
