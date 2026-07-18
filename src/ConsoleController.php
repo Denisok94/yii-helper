@@ -12,7 +12,7 @@ use denisok94\helper\yii2\Helper;
  * @example Пример:
  * ```php
  * // Вызвать `action` консольного контроллера:
- * H::exec('сontroller/action', [params]);
+ * H::exec('controller/action', [params]);
  * // Получить переданные параметры
  * $init = $this->params;
  * ```
