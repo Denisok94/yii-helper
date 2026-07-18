@@ -1,6 +1,6 @@
-<h1 align = "center"> Yii2 Helper Class </h1>
+# Yii2 Helper Class
 
-# Installation
+## Installation
 
 Run:
 
@@ -10,30 +10,18 @@ composer require --prefer-dist denisok94/yii-helper
 php composer.phar require --prefer-dist denisok94/yii-helper
 ```
 
-or add to the `require` section of your `composer.json` file:
+## Use
 
-```json
-"denisok94/yii-helper": "*"
-```
+- [StatusController](#statuscontroller)
+- [ConsoleController](#consolecontroller)
+- [Helper](#helper)
 
-```bash
-composer update
-# or
-php composer.phar update
-```
-
-# Use
-
-- [StatusController](#StatusController)
-- [ConsoleController](#ConsoleController)
-- [Helper](#Helper)
-
-# **StatusController**
+## StatusController
 
 For communication in the json format.
 
 | Method | Parameters | default code | Description |
-|----------------|:---------:|:---------:|:----------------|
+| ---------------- | :---------: | :---------: | :---------------- |
 | send | $data | 200 | custom responses |
 | sendSuccess | $data | 200 | Report Success |
 | sendResponse | $data, $message, $status, $code | 200 | custom responses |
@@ -122,7 +110,7 @@ return $this->sendResponse($data, $message, $status, 999); // http status code 9
 // ['code' => '999', 'status' => $status, 'message' => $message, 'data' => $data]
 ```
 
-# **ConsoleController**
+## ConsoleController
 
 ```php
 namespace app\commands;
@@ -139,8 +127,8 @@ class MyController extends ConsoleController
 use \denisok94\helper\yii2\Helper as H;
 H::exec('controller/action', [params]);
 ```
-> Консольный контроллер, не подразумевает ответ. 
-Вся выводящая информация (echo, print и тд) будет записана в лог файл. 
+> Консольный контроллер, не подразумевает ответ.
+Вся выводящая информация (echo, print и тд) будет записана в лог файл.
 При вызове через `H::exec()`, по умолчанию логи находятся в `/runtime/logs/consoleOut.XXX.log` (можно переопределить)
 
 Получить переданные параметры
@@ -155,17 +143,18 @@ use \denisok94\helper\yii2\ConsoleController;
 
 class MyController extends ConsoleController
 {
-	public function actionTest()
-	{
-		$init = $this->params; // ['test' => 'test1']
-		$test = $this->params['test']; // 'test1'
-	}
+    public function actionTest()
+    {
+        $init = $this->params; // ['test' => 'test1']
+        $test = $this->params['test']; // 'test1'
+    }
 }
 //
 use \denisok94\helper\yii2\Helper as H;
 H::exec('my/test', ['test' => 'test1']);
 ```
-# **Helper**
+
+## Helper
 
 ```php
 use \denisok94\helper\yii2\Helper as H;
@@ -175,45 +164,5 @@ H::methodName($arg);
 `yii2\Helper` наследует все от [Helpers](https://github.com/Denisok94/helper)
 
 | Method | Description |
-|----------------|:----------------|
+| ---------------- | :---------------- |
 | exec | Выполнить консольную команду |
-| log | Записать данные в лог файл. Файлы хранятся в `runtime/logs/` |
-| setCache | Запомнить массив в кэш |
-| getCache | Взять массив из кэша |
-| deleteCache | Удалить кэш |
-| ~~clearCache~~ | | |
-
-
-___
-> `setCache`/`getCache`.
-В кэш можно сохранить результат запроса из бд, который часто запрашивается, например для фильтра.
-К тому же, этот фильтр, может быть, использоваться несколько раз на странице или сама страница с ним, может, многократно обновляться/перезагружаться.
-
-```php
-namespace app\components;
-use app\components\H;
-
-class Filter
-{
-    //.....
-    /**
-     * @return array
-     */
-    public static function getTypes()
-    {
-        $types = H::getCache('types'); // dir: app/cache/types.json
-        if ($types) {
-            return $types;
-        } else {
-            $types = \app\models\Types::find()
-                ->select(['id', 'name'])->all();
-            $array = [];
-            foreach ($types as $key => $value) {
-                $array[$value->id] = ucfirst($value->name);
-            }
-            H::setCache('types', $array);
-            return $array;
-        }
-    }
-}
-```
