@@ -35,8 +35,12 @@ trait Other
         }
     }
 
+    // -----
+    // фигня
+
     /**
      * Создать/Добавить/обновить кэш
+     * @deprecated устарело
      * @param string $name имя кэша,
      * @param array $array данные, которые надо за кэшировать,
      * @return bool успех записи
@@ -58,6 +62,7 @@ trait Other
 
     /**
      * Получить кэш
+     * @deprecated устарело
      * @param string $name имя кэша,
      * @return array|bool
      */
@@ -73,6 +78,7 @@ trait Other
 
     /**
      * Удалить кэш
+     * @deprecated устарело
      * @param string $name имя кэша,
      * @return bool
      */
@@ -83,15 +89,7 @@ trait Other
     }
 
     /**
-     * Очистить кэш
-     * @return bool
-     */
-    public static function clearCache()
-    {
-        return false;
-    }
-
-    /**
+     * @deprecated устарело
      * @param string $dirCache
      */
     private static function createDirCache(string $dirCache)
@@ -102,6 +100,7 @@ trait Other
 
     /**
      * Записать логи
+     * @deprecated устарело
      * @param string $name имя файла
      * @param string $value текст лога
      */
